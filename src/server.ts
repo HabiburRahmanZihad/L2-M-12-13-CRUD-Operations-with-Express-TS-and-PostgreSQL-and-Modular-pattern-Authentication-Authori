@@ -57,9 +57,33 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello Next Level Programmers!')
 })
 
-app.post('/', (req: Request, res: Response) => {
-  // res.send('POST request to the homepage')
-  console.log(req.body);
+app.post('/users', async (req: Request, res: Response) => {
+  const { name, email } = req.body;
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
+      [name, email]
+    );
+    console.log(result.rows[0]);
+    res.status(201).json({
+      success: true,
+      message: 'User created successfully',
+      user: result.rows[0]
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Error inserting data into the database',
+      error: error.message
+    });
+    return;
+  }
+
+
+
+
+  // console.log(req.body);
 
   res.status(201).json({
     success: true,
