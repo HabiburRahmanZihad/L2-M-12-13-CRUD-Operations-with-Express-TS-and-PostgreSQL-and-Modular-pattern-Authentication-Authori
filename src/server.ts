@@ -53,6 +53,13 @@ const initDb = async () => {
 
 initDb();
 
+//logger middleware
+app.use((req: Request, res: Response, next) => {
+  console.log(`${req.method} ${req.path} - ${new Date().toISOString()}`);
+  next();
+});
+
+// Root Endpoint
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello Next Level Programmers!')
 })
@@ -323,6 +330,15 @@ app.delete('/todos/:id', async (req: Request, res: Response) => {
   }
 });
 
+
+
+//Handle Invalid Routes
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
+  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
