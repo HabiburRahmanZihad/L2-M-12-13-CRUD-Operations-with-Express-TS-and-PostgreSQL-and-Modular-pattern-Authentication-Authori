@@ -57,6 +57,53 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello Next Level Programmers!')
 })
 
+
+//User CRUD Operations
+
+// Read all users
+app.get('/users', async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query('SELECT * FROM users');
+    res.status(200).json({
+      success: true,
+      users: result.rows
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching users from the database',
+      error: error.message
+    });
+  }
+});
+
+
+// Get a single user by ID
+app.get('/users/:id', async (req: Request, res: Response) => {
+  const userId = req.params.id;
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      user: result.rows[0]
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching user from the database',
+      error: error.message
+    });
+  }
+});
+
+
+// Create a new user
 app.post('/users', async (req: Request, res: Response) => {
   const { name, email } = req.body;
 
@@ -77,18 +124,9 @@ app.post('/users', async (req: Request, res: Response) => {
       message: 'Error inserting data into the database',
       error: error.message
     });
-    return;
   }
 
-
-
-
   // console.log(req.body);
-
-  res.status(201).json({
-    success: true,
-    message: 'Data received successfully'
-  })
 })
 
 app.listen(port, () => {
