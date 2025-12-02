@@ -5,6 +5,7 @@ import initDb from './config/db';
 import logger from './middleware/logger';
 import { userRoutes } from './modules/user/user.route';
 import { todoRoutes } from './modules/todo/todo.route';
+import { authRoutes } from './modules/auth/auth.routes';
 
 const app = express()
 const port = config.port || 8080;
@@ -24,16 +25,13 @@ app.get('/', logger, (req: Request, res: Response) => {
 
 
 //User CRUD Operations
-
 app.use('/users', userRoutes);
 
-
-
 // Todo CRUD Operations
-
-
 app.use('/todos', todoRoutes);
 
+// Authentication Routes
+app.use('/auth', authRoutes);
 
 //Handle Invalid Routes
 app.use((req: Request, res: Response) => {
