@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../config/db"
 import jwt from "jsonwebtoken";
+import config from "../../config";
 
 const loginUser = async (email: string, password: string) => {
   // Placeholder logic for user login
@@ -20,9 +21,8 @@ const loginUser = async (email: string, password: string) => {
     throw new Error('Invalid password');
   }
 
-
-  const secret = 'your_jwt_secret_key'
-  const token = jwt.sign({ userId: user.id, email: user.email }, secret, { expiresIn: "1h" }); // Replace with actual JWT generation logic
+  const secret = config.jwtSecret as string;
+  const token = jwt.sign({ userId: user.id, email: user.email }, secret, { expiresIn: "1h" });
   return { user, token };
 }
 

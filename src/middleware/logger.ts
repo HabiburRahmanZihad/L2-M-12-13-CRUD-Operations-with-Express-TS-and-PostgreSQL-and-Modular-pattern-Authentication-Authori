@@ -1,7 +1,7 @@
-import express, { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 
 //logger middleware
-const logger  = (req: Request, res: Response, next: NextFunction) => {
+const logger = (req: Request, res: Response, next: NextFunction) => {
   console.log(`${req.method} ${req.path} - ${new Date().toISOString()}`);
   next();
 };

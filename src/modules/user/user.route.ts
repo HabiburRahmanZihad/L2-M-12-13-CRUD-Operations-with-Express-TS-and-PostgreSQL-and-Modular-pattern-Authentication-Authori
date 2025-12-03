@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { userController } from "./user.controller";
+import auth from "../../middleware/auth";
+import logger from "../../middleware/logger";
 
 const router = Router();
 
@@ -7,7 +9,7 @@ const router = Router();
 router.post("/", userController.CreateUser);
 
 // Get all users
-router.get('/', userController.GetAllUsers);
+router.get('/', logger, auth(), userController.GetAllUsers);
 
 // Get a single user by ID
 router.get('/:id', userController.GetUserById);
