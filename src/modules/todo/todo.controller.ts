@@ -6,7 +6,7 @@ const CreateTodo = async (req: Request, res: Response) => {
   const { user_id, title } = req.body;
 
   try {
-    const result = await todoService.CreateTodo(user_id, title);
+    const result = await todoService.CreateTodo({ user_id, title });
     res.status(201).json({
       success: true,
       message: 'Todo created successfully',
