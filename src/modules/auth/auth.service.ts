@@ -22,7 +22,7 @@ const loginUser = async (email: string, password: string) => {
   }
 
   const secret = config.jwtSecret as string;
-  const token = jwt.sign({ userId: user.id, email: user.email }, secret, { expiresIn: "1h" });
+  const token = jwt.sign({ userId: user.id,role: user.role, email: user.email  }, secret, { expiresIn: "1h" });
   return { user, token };
 }
 

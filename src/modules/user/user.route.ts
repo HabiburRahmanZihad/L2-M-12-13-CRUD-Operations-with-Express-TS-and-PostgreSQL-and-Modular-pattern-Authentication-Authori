@@ -9,7 +9,7 @@ const router = Router();
 router.post("/", userController.CreateUser);
 
 // Get all users
-router.get('/', logger, auth(), userController.GetAllUsers);
+router.get('/', logger, auth('admin'), userController.GetAllUsers);
 
 // Get a single user by ID
 router.get('/:id', userController.GetUserById);
